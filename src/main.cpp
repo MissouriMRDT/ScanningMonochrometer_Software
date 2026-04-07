@@ -13,6 +13,10 @@ void loop() {
 }
 
 // put function definitions here:
+//IPD = (VP_PD-Vbias)/Rf
 int myFunction(int x, int y) {
   return x + y;
+}
+int findIPD(float VP_PD, float Vbias, float Rf) {
+  return (VP_PD - Vbias) / Rf;
 }
