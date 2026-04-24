@@ -10,6 +10,12 @@ const int DIR = 37;
 int dir = 0;
 int m0 = 1, m1 = 1, m2 = 1; //sets steps to 256 steps/rev.
 
+/*
+Make a count int and a zeroing function that sets count to zero.
+count will be the max steps so put it in the for loop instead of 256.
+make a function to print wavelength
+
+*/
 
 // put function declarations here:
 float findIPD(float VP_PD, float Vbias, float Rf);
@@ -63,9 +69,11 @@ int myFunction(int x, int y) {
 }
 void clockwise() {
   dir = 1; // Set direction to clockwise
+  digitalWrite(DIR, HIGH);
 }
 void counterClockwise() {
   dir = 0; // Set direction to counter-clockwise
+  digitalWrite(DIR, LOW);
 }
 float findIPD(float VP_PD, float Vbias, float Rf) {
   return (VP_PD - Vbias) / Rf;
