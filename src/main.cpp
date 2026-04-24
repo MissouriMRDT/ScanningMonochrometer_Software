@@ -9,6 +9,8 @@ const int STEP =35;
 const int DIR = 37;
 int dir = 0;
 int m0 = 1, m1 = 1, m2 = 1; //sets steps to 256 steps/rev.
+int count = 0; // Initialize count variable
+float wavelength = 0.0; // Initialize wavelength variable
 
 /*
 Make a count int and a zeroing function that sets count to zero.
@@ -22,6 +24,7 @@ float findIPD(float VP_PD, float Vbias, float Rf);
 int myFunction(int x, int y); 
 void clockwise();
 void counterClockwise();
+void printWaveLength(float);
 
 void setup() {
   Serial.begin(9600);
@@ -42,7 +45,8 @@ delay(1000); // Wait for the driver to initialize
 
 void loop() {
   // put your main code here, to run repeatedly:
-  for(int i =0; i<256;i++){
+ scanf("%d", &count); // Read the count value from the serial input
+  for(int i =0; i<count;i++){
     counterClockwise();
 digitalWrite(STEP, HIGH);
 delay(100);
@@ -51,7 +55,7 @@ if(digitalRead(EN) == LOW){
   i=256;
 }
   }
-    for(int i =0; i<256;i++){
+    for(int i =0; i<count;i++){
 clockwise();
       digitalWrite(STEP, HIGH);
 delay(100);
@@ -77,4 +81,10 @@ void counterClockwise() {
 }
 float findIPD(float VP_PD, float Vbias, float Rf) {
   return (VP_PD - Vbias) / Rf;
+}
+void printWaveLength(float WaveLength){
+  WaveLength+= 0.0;
+  Serial.print("The wavelength is: ");
+  Serial.println(WaveLength);
+  Serial.print(" nms");
 }
