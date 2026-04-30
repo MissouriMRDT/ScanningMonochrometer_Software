@@ -1,30 +1,28 @@
 #include <Arduino.h>
 
-const int EN = 23;
-const int M0 = 25;
-const int M1 = 27;
-const int M2 = 29;
-const int STDBY = 33;
-const int STEP =35;
-const int DIR = 37;
+const int EN = 5;
+const int M0 = 6;
+const int M1 = 7;
+const int M2 = 8;
+const int STDBY = 9;
+const int STEP = 10;
+const int DIR = 11;
 int dir = 0;
 int m0 = 1, m1 = 1, m2 = 1; //sets steps to 256 steps/rev.
 int count = 0; // Initialize count variable
 float wavelength = 0.0; // Initialize wavelength variable
 
 /*
-Make a count int and a zeroing function that sets count to zero.
-count will be the max steps so put it in the for loop instead of 256.
-make a function to print wavelength
-
+TODO:
+Get the wavelength change per step and the initial wavelength. 
 */
-
+void zeroCount();
 // put function declarations here:
 float findIPD(float VP_PD, float Vbias, float Rf);
 int myFunction(int x, int y); 
 void clockwise();
 void counterClockwise();
-void printWaveLength(float);
+void printWaveLength(float *WaveLength);
 
 void setup() {
   Serial.begin(9600);
@@ -36,6 +34,7 @@ pinMode(DIR, OUTPUT);
 pinMode(STEP, OUTPUT);
 digitalWrite(STDBY, LOW); // Set STDBY low to enable the driver
 pinMode(EN, OUTPUT);
+
 digitalWrite(M0, HIGH);
 digitalWrite(M1, HIGH); // sets M 0-2 to 1.that sets up for 256 steps.
 digitalWrite(M2, HIGH);
@@ -45,12 +44,15 @@ delay(1000); // Wait for the driver to initialize
 
 void loop() {
   // put your main code here, to run repeatedly:
- scanf("%d", &count); // Read the count value from the serial input
+ if(Serial.available() > 0){
+  count = Serial.parseInt();
+ }
   for(int i =0; i<count;i++){
     counterClockwise();
 digitalWrite(STEP, HIGH);
 delay(100);
 digitalWrite(STEP, LOW);
+delay(100);
 if(digitalRead(EN) == LOW){
   i=256;
 }
@@ -82,9 +84,13 @@ void counterClockwise() {
 float findIPD(float VP_PD, float Vbias, float Rf) {
   return (VP_PD - Vbias) / Rf;
 }
-void printWaveLength(float WaveLength){
-  WaveLength+= 0.0;
+void printWaveLength(float *WaveLength){
+  *WaveLength+= 0.0;
   Serial.print("The wavelength is: ");
-  Serial.println(WaveLength);
+  Serial.println(*WaveLength);
   Serial.print(" nms");
+}
+
+void zeroCount(){
+  count = 0;
 }
