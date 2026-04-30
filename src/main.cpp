@@ -47,23 +47,24 @@ void loop() {
  if(Serial.available() > 0){
   count = Serial.parseInt();
  }
+ counterClockwise();
   for(int i =0; i<count;i++){
-    counterClockwise();
 digitalWrite(STEP, HIGH);
 delay(100);
 digitalWrite(STEP, LOW);
 delay(100);
 if(digitalRead(EN) == LOW){
-  i=256;
+  break;
 }
   }
-    for(int i =0; i<count;i++){
 clockwise();
+  for(int i =0; i<count;i++){
       digitalWrite(STEP, HIGH);
 delay(100);
 digitalWrite(STEP, LOW);
+delay(100);
 if(digitalRead(EN) == LOW){
-  i=256;
+  break;
 }
     }
 }
